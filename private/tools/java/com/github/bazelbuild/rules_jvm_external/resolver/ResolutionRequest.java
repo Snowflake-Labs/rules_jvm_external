@@ -73,7 +73,8 @@ public class ResolutionRequest {
             coordinates.getArtifactId(),
             "pom",
             "",
-            coordinates.getVersion());
+            coordinates.getVersion(),
+            coordinates.getDirVersion());
     Artifact artifact =
         new Artifact(bom, Stream.of(exclusions).map(Coordinates::new).collect(Collectors.toSet()));
 

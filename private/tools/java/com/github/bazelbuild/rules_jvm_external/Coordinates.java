@@ -19,10 +19,15 @@ import java.util.Objects;
 /**
  * Represents a Maven coordinate using Maven's standard schema of
  * <groupId>:<artifactId>[:<extension>[:<classifier>][:<version>].
+ *
+ * <p>The optional <tt>dirVersion</tt> property is used for snapshotted artifacts.  For those,
+ * directory version component in the repository URL is of the <tt>*-SNAPSHOT</tt> * form
+ * whereas the version in the artifact itself numeric.</p>
  */
 public class Coordinates implements Comparable<Coordinates> {
   private final String groupId;
   private final String artifactId;
+  private final String dirVersion;
   private final String version;
   private final String classifier;
   private final String extension;
@@ -41,6 +46,7 @@ public class Coordinates implements Comparable<Coordinates> {
 
     groupId = Objects.requireNonNull(parts[0]);
     artifactId = Objects.requireNonNull(parts[1]);
+    dirVersion = null;
 
     if (parts.length == 2) {
       extension = "jar";
@@ -61,14 +67,20 @@ public class Coordinates implements Comparable<Coordinates> {
     }
   }
 
+  // public Coordinates(
+  //     String groupId, String artifactId, String extension, String classifier, String version) {
+  //   this(groupId, artifactId, extension, classifier, version, null);
+  // }
+
   public Coordinates(
-      String groupId, String artifactId, String extension, String classifier, String version) {
+      String groupId, String artifactId, String extension, String classifier, String version, String dirVersion) {
     this.groupId = Objects.requireNonNull(groupId, "Group ID");
     this.artifactId = Objects.requireNonNull(artifactId, "Artifact ID");
     this.extension = extension == null || extension.isEmpty() ? "jar" : extension;
     this.classifier =
         classifier == null || classifier.isEmpty() || "jar".equals(classifier) ? "" : classifier;
     this.version = version == null || version.isEmpty() ? "" : version;
+    this.dirVersion = dirVersion;
   }
 
   public String getGroupId() {
@@ -77,6 +89,10 @@ public class Coordinates implements Comparable<Coordinates> {
 
   public String getArtifactId() {
     return artifactId;
+  }
+
+  public String getDirVersion() {
+    return dirVersion;
   }
 
   public String getVersion() {
@@ -88,15 +104,17 @@ public class Coordinates implements Comparable<Coordinates> {
   }
 
   public Coordinates setClassifier(String classifier) {
-    return new Coordinates(getGroupId(), getArtifactId(), getExtension(), classifier, getVersion());
+    return new Coordinates(
+        getGroupId(), getArtifactId(), getExtension(), classifier, getVersion(), getDirVersion());
   }
 
   public Coordinates setExtension(String extension) {
-    return new Coordinates(getGroupId(), getArtifactId(), extension, getClassifier(), getVersion());
+    return new Coordinates(
+        getGroupId(), getArtifactId(), extension, getClassifier(), getVersion(), getDirVersion());
   }
 
   public Coordinates setVersion(String version) {
-    return new Coordinates(getGroupId(), getArtifactId(), getExtension(), getClassifier(), version);
+    return new Coordinates(getGroupId(), getArtifactId(), getExtension(), getClassifier(), version, getDirVersion());
   }
 
   public String getExtension() {
@@ -177,6 +195,7 @@ public class Coordinates implements Comparable<Coordinates> {
     Coordinates that = (Coordinates) o;
     return getGroupId().equals(that.getGroupId())
         && getArtifactId().equals(that.getArtifactId())
+        && Objects.equals(getDirVersion(), that.getDirVersion())
         && Objects.equals(getVersion(), that.getVersion())
         && Objects.equals(getClassifier(), that.getClassifier())
         && Objects.equals(getExtension(), that.getExtension());
@@ -185,7 +204,8 @@ public class Coordinates implements Comparable<Coordinates> {
   @Override
   public int hashCode() {
     return Objects.hash(
-        getGroupId(), getArtifactId(), getVersion(), getClassifier(), getExtension());
+        getGroupId(), getArtifactId(), getDirVersion(), getVersion(), getClassifier(),
+        getExtension());
   }
 
   private boolean isNullOrEmpty(String value) {
