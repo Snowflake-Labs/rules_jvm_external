@@ -256,10 +256,10 @@ def _generate_target(
     target_visibilities = []
     if not repository_ctx.attr.strict_visibility or explicit_artifacts.get(simple_coord):
         target_visibilities.append("//visibility:public")
-    elif repository_ctx.attr.generate_compat_repositories:
-        target_visibilities.append("@%s//:__subpackages__" % target_label)
     else:
         target_visibilities.extend(repository_ctx.attr.strict_visibility_value)
+        if repository_ctx.attr.generate_compat_repositories:
+            target_visibilities.append("@%s//:__subpackages__" % target_label)
 
     target_import_string.append("\tvisibility = [%s]," % (",".join(["\"%s\"" % t for t in target_visibilities])))
     alias_visibility = "\tvisibility = [%s],\n" % (",".join(["\"%s\"" % t for t in target_visibilities]))
