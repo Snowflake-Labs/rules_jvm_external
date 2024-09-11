@@ -184,7 +184,8 @@ public class ResolverConfig {
                         art.getArtifactId(),
                         art.getExtension(),
                         art.getClassifier(),
-                        art.getVersion());
+                        art.getVersion(),
+                        null);
                 request.addArtifact(
                     coords.toString(),
                     art.getExclusions().stream()

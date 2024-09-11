@@ -463,7 +463,8 @@ public class MavenResolver implements Resolver {
             artifact.getArtifactId(),
             artifact.getExtension(),
             artifact.getClassifier(),
-            artifact.getVersion())
+            artifact.getVersion(),
+            artifact.getBaseVersion())
         .asKey();
   }
 

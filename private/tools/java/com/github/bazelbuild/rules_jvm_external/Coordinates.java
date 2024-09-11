@@ -67,11 +67,6 @@ public class Coordinates implements Comparable<Coordinates> {
     }
   }
 
-  // public Coordinates(
-  //     String groupId, String artifactId, String extension, String classifier, String version) {
-  //   this(groupId, artifactId, extension, classifier, version, null);
-  // }
-
   public Coordinates(
       String groupId, String artifactId, String extension, String classifier, String version, String dirVersion) {
     this.groupId = Objects.requireNonNull(groupId, "Group ID");

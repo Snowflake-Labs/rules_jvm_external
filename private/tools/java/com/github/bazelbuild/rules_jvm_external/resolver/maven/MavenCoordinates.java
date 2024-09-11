@@ -38,7 +38,8 @@ class MavenCoordinates {
         artifact.getArtifactId(),
         mapPackagingToExtension(artifact.getExtension()),
         classifier,
-        artifact.getVersion());
+        artifact.getVersion(),
+        artifact.getBaseVersion());
   }
 
   private static String construct(

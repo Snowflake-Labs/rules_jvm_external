@@ -71,7 +71,7 @@ public class CoordinateGatheringListener extends AbstractRepositoryListener {
 
       Coordinates coords =
           new Coordinates(
-              artifact.getGroupId(), artifact.getArtifactId(), null, null, artifact.getVersion());
+              artifact.getGroupId(), artifact.getArtifactId(), null, null, artifact.getVersion(), null);
 
       Coordinates actualCoords =
           new Coordinates(
@@ -79,7 +79,8 @@ public class CoordinateGatheringListener extends AbstractRepositoryListener {
               artifact.getArtifactId(),
               extension,
               artifact.getClassifier(),
-              artifact.getVersion());
+              artifact.getVersion(),
+              artifact.getBaseVersion());
 
       knownRewrittenCoordinates.put(coords, actualCoords);
     } catch (IOException | XmlPullParserException e) {

@@ -283,7 +283,8 @@ public abstract class ResolverTestBase {
                     parentCoords.getArtifactId(),
                     "pom",
                     null,
-                    parentCoords.getVersion()))
+                    parentCoords.getVersion(),
+                    parentCoords.getDirVersion()))
             .getPath();
 
     Graph<Coordinates> resolved =
